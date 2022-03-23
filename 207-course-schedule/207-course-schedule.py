@@ -9,12 +9,12 @@ class Solution:
         
         
         def dfs(i):
-            if visited[i] == -1: return False
-            if visited[i] == 1: return True
-            visited[i] = -1
+            if visited[i] == -1: return False # found a cycle
+            if visited[i] == 1: return True # if this node has already perform dfs, skip it
+            visited[i] = -1 # first mark this node as visited, and start dfs
             for j in course_dict[i]:
                 if not dfs(j): return False
-            visited[i] = 1
+            visited[i] = 1 # after performing dfs, mark the node as done
             return True
     
         for i in range(numCourses):

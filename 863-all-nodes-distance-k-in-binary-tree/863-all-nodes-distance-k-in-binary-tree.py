@@ -6,25 +6,34 @@
 #         self.right = None
 
 class Solution:
-    def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
-        conn_table = defaultdict(list)
-        def connect(p, c):
-            if p and c:
-                conn_table[p.val].append(c.val)
-                conn_table[c.val].append(p.val)
-            if c.left: connect(c, c.left)
-            if c.right: connect(c, c.right)
+    def __init__(self):
+        self.graph = defaultdict(list)
+    
+    def build_graph(self, root):
+        if not root:
+            return
+        if root.left:
+            self.graph[root.val].append(root.left.val)
+            self.graph[root.left.val].append(root.val)
+            self.build_graph(root.left)
+        if root.right:
+            self.graph[root.val].append(root.right.val)
+            self.graph[root.right.val].append(root.val)
+            self.build_graph(root.right)
         
-        connect(None, root)
-        bfs = [target.val]
-        seen = set(bfs)
-        for i in range(k):
-            new_level = []
-            for node in bfs:
-                for connected_node in conn_table[node]:
-                    if connected_node not in seen:
-                        new_level.append(connected_node)
-            bfs = new_level
-            for val in bfs:
-                seen.add(val)
-        return bfs
+    def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
+        self.build_graph(root)
+        res = [target.val]
+        seen = set([])
+        
+        for _ in range(k):
+            size, level = len(res), []
+            for _ in range(size):
+                cur = res.pop()
+                if cur not in seen:
+                    level.extend(self.graph[cur])
+                    seen.add(cur)
+            
+            res = level
+        return [val for val in res if val not in seen]
+        

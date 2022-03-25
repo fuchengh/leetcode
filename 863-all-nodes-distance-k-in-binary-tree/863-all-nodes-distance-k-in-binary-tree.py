@@ -7,18 +7,18 @@
 
 class Solution:
     def __init__(self):
-        self.graph = defaultdict(list)
+        self.graph = defaultdict(set)
     
     def build_graph(self, root):
         if not root:
             return
         if root.left:
-            self.graph[root.val].append(root.left.val)
-            self.graph[root.left.val].append(root.val)
+            self.graph[root.val].add(root.left.val)
+            self.graph[root.left.val].add(root.val)
             self.build_graph(root.left)
         if root.right:
-            self.graph[root.val].append(root.right.val)
-            self.graph[root.right.val].append(root.val)
+            self.graph[root.val].add(root.right.val)
+            self.graph[root.right.val].add(root.val)
             self.build_graph(root.right)
         
     def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
@@ -27,13 +27,12 @@ class Solution:
         seen = set([])
         
         for _ in range(k):
-            size, level = len(res), []
+            size, next_level = len(res), []
             for _ in range(size):
                 cur = res.pop()
                 if cur not in seen:
-                    level.extend(self.graph[cur])
+                    next_level.extend(list(self.graph[cur]))
                     seen.add(cur)
-            
-            res = level
+            res = set(next_level)
         return [val for val in res if val not in seen]
         

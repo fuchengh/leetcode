@@ -8,8 +8,7 @@ class Solution:
             return True
         
         def backtrack(start, path):
-            path_len = sum([len(x) for x in path])
-            if path_len == len(s):
+            if start == len(s):
                 res.append(path[:])
                 return
             for i in range(start, len(s)):

@@ -1,17 +1,21 @@
 class Solution:
     def longestRepeatingSubstring(self, s: str) -> int:
-        strs = defaultdict(lambda: 1)
-        seen = set()
-        
-        for i in range(len(s)):
-            for j in range(i, len(s)):
-                if s[i:j+1] in seen:
-                    strs[j-i+1] += 1
-                else:
-                    seen.add(s[i:j+1])
-        
-        keys = sorted(strs.keys())[::-1]
-        for i in keys:
-            if strs[i] > 1:
-                return i
-        return 0
+        def search(n, length): # search substring of a given length
+            seen = set()
+            for start in range(n - length + 1):
+                if s[start:start+length] in seen:
+                    return start
+                seen.add(s[start:start+length])
+            
+            return -1
+    
+        n = len(s)
+        left, right = 1, n
+        while left <= right:
+            mid = (left + right) // 2
+            if search(n, mid) != -1:
+                left = mid + 1
+            else:
+                right = mid - 1
+                
+        return left - 1

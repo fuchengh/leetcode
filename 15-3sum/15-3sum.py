@@ -1,29 +1,25 @@
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
-        def twoSum(arr, remain, res):
-            lo = 0
-            hi = len(arr)-1
-            
-            while lo < hi:
-                sum = arr[lo] + arr[hi] + remain
+        def twoSum(x):
+            seen = set()
+            y = x + 1
+            while y < len(nums):
+                remain = 0 - nums[x] - nums[y]
+                if remain in seen:
+                    res.append([nums[x], nums[y], remain])
+                    while y+1 < len(nums) and nums[y] == nums[y+1]:
+                        y += 1
                 
-                if sum < 0:
-                    lo += 1
-                elif sum > 0:
-                    hi -= 1
-                else:
-                    res.append([remain, arr[lo], arr[hi]])
-                    lo += 1
-                    hi -= 1
-                    
-                    while lo < hi and arr[lo] == arr[lo-1]:
-                        lo += 1
-        res = []
-        nums.sort()
+                seen.add(nums[y])
+                y += 1
         
-        for i in range(len(nums)-2):
-            if nums[i] > 0: break
-            if nums[i-1] != nums[i] or i == 0:
-                twoSum(nums[i+1:], nums[i], res)
+        nums.sort()
+        res = []
+        
+        for x in range(len(nums)-2):
+            if nums[x] > 0:
+                break
+            if x == 0 or nums[x] != nums[x-1]:
+                twoSum(x)
         
         return res

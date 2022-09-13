@@ -1,13 +1,16 @@
 class Solution:
     def isAnagram(self, s: str, t: str) -> bool:
         table = defaultdict(lambda: 0)
+        if len(s) != len(t):
+            return False
         
         for c in s:
             table[c] += 1
         
         for c in t:
-            if table[c] == 0:
+            if table[c] > 0:
+                table[c] -= 1
+            else:
                 return False
-            table[c] -= 1
         
-        return True and len(s) == len(t)
+        return True

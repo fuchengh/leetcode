@@ -3,34 +3,27 @@ class Solution:
         stack = []
         
         for c in s:
-            if c == "(":
-                stack.append(c)
             if c == ")":
-                if stack:
-                    top = stack.pop()
-                    if top != "(":
-                        return False
-                else:
+                if len(stack) == 0:
                     return False
-            if c == "[":
-                stack.append(c)
+                top = stack.pop()
+                if top != "(":
+                    return False
             if c == "]":
-                if stack:
-                    top = stack.pop()
-                    if top != "[":
-                        return False
-                else:
+                if len(stack) == 0:
                     return False
-            if c == "{":
-                stack.append(c)
+                top = stack.pop()
+                if top != "[":
+                    return False
             if c == "}":
-                if stack:
-                    top = stack.pop()
-                    if top != "{":
-                        return False
-                else:
+                if len(stack) == 0:
                     return False
+                top = stack.pop()
+                if top != "{":
+                    return False
+            if c in "([{":
+                stack.append(c)
         
-        if stack:
+        if len(stack) != 0:
             return False
-        return True            
+        return True

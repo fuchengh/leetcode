@@ -9,15 +9,13 @@ class Solution:
         def invert(root):
             if not root:
                 return
-
-            #if root.left and root.right:
-            temp = root.left
+            
+            tmp = root.left
             root.left = root.right
-            root.right = temp
-
+            root.right = tmp
+            
             invert(root.left)
             invert(root.right)
-        
+    
         invert(root)
-
         return root

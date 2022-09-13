@@ -1,40 +1,13 @@
 class Solution:
     def addBinary(self, a: str, b: str) -> str:
-        ptra = len(a) - 1
-        ptrb = len(b) - 1
+        x = int(a, 2)
+        y = int(b, 2)
         
-        ans = []
-        carry = 0
+        while y:
+            answer = x ^ y
+            carry = (x & y) << 1
+            x = answer
+            y = carry
         
-        while ptra >= 0 and ptrb >= 0:
-            sum_ = int(a[ptra]) + int(b[ptrb]) + carry
-            ans.append(str(sum_ % 2))
-            if sum_ > 1:
-                carry = 1
-            else:
-                carry = 0
+        return bin(x)[2:]
             
-            ptra -= 1
-            ptrb -= 1
-        
-        while ptra >= 0:
-            sum_ = int(a[ptra]) + carry
-            ans.append(str(sum_ % 2))
-            if sum_ > 1:
-                carry = 1
-            else:
-                carry = 0
-            ptra -= 1
-        while ptrb >= 0:
-            sum_ = int(b[ptrb]) + carry
-            ans.append(str(sum_ % 2))
-            if sum_ > 1:
-                carry = 1
-            else:
-                carry = 0
-            ptrb -= 1
-        if carry:
-            ans.append("1")
-        
-        return "".join(ans[::-1])
-        

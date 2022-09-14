@@ -1,12 +1,19 @@
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
-        @lru_cache
+        seen = defaultdict(lambda: False)
+        words = set(wordDict)
+        
         def helper(left):
             if left == len(s):
                 return True
-            for end in range(left+1, len(s)+1):
-                if s[left:end] in wordDict and helper(end):
+            if left in seen:
+                return seen[left]
+            for right in range(left+1, len(s)+1):
+                cur = s[left:right]
+                if cur in words and helper(right):
+                    seen[left] = True
                     return True
+            seen[left] = False
             return False
         
         return helper(0)

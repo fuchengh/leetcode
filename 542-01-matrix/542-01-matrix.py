@@ -1,20 +1,21 @@
 class Solution:
     def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
-        dist = [[0] * len(mat[0])] * len(mat)
-        m, n = len(mat), len(mat[0])
+        rows, cols = len(mat), len(mat[0])
+        dist = [[math.inf for _ in range(cols)] for _ in range(rows)]
+        q = deque([])
         
-        for r in range(m):
-            for c in range(n):
-                if mat[r][c] > 0:
-                    top = mat[r-1][c] if r > 0 else math.inf
-                    left = mat[r][c-1] if c > 0 else math.inf
-                    mat[r][c] = min(top, left) + 1
+        for r in range(rows):
+            for c in range(cols):
+                if mat[r][c] == 0:
+                    q.append((r, c))
+                    dist[r][c] = 0
+                    
+        while q:
+            cur = q.popleft()
+            r, c = cur
+            for x, y in [(r+1, c), (r-1, c), (r, c+1), (r, c-1)]:
+                if 0 <= x < rows and 0 <= y < cols and dist[x][y] == math.inf:
+                    dist[x][y] = min(dist[x][y], dist[r][c] + 1)
+                    q.append((x, y))
         
-        for r in range(m-1, -1, -1):
-            for c in range(n-1, -1, -1):
-                if mat[r][c] > 0:
-                    right = mat[r][c+1] if c < n-1 else math.inf
-                    bottom = mat[r+1][c] if r < m-1 else math.inf
-                    mat[r][c] = min(mat[r][c], right+1, bottom+1)
-        
-        return mat
+        return dist

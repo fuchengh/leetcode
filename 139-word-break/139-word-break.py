@@ -3,9 +3,9 @@ class Solution:
         dp = [False] * (len(s)+1)
         dp[0] = True
         
-        for i in range(1, len(s)+1):
-            for j in range(i):
-                if s[j:i] in wordDict and dp[j]:
-                    dp[i] = True
+        for right in range(1, len(s)+1):
+            for left in range(right):
+                if s[left:right] in wordDict and dp[left]:
+                    dp[right] = True
                     break
         return dp[-1]

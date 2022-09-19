@@ -11,20 +11,21 @@ class Solution:
                 comp = target - nums[left]
                 if comp in seen:
                     res.append([cur, nums[left], comp])
+                    while left+1 < len(nums) and nums[left] == nums[left+1]:
+                        left += 1
                 seen.add(nums[left])
                 left += 1 
                 
             return res
     
-        res = set([])
+        res = []
         cur = 0
         while cur < len(nums):
             n = nums[cur]
-            tmp = twoSum(n, -n, cur+1)
-            for r in tmp:
-                res.add(tuple(r))
+            if n > 0:
+                break
+            if cur == 0 or nums[cur] != nums[cur-1]:
+                res.extend(twoSum(n, -n, cur+1))
             cur += 1
-            while cur+1 < len(nums) and nums[cur-1] == nums[cur]:
-                cur += 1
             
-        return [list(x) for x in res]
+        return res

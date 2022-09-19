@@ -5,11 +5,9 @@ class HitCounter:
 
     def hit(self, timestamp: int) -> None:
         self.q.append(timestamp)
-        # pop timestamps that expired
-        while self.q and (timestamp - self.q[0]) >= 300:
-            self.q.popleft()
 
     def getHits(self, timestamp: int) -> int:
+        # pop timestamps that were expired
         while self.q and (timestamp - self.q[0]) >= 300:
             self.q.popleft()
         return len(self.q)

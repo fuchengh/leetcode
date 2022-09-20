@@ -2,15 +2,12 @@ class LRUCache:
 
     def __init__(self, capacity: int):
         self.cap = capacity
-        self.deq = deque([])
-        self.table = defaultdict(lambda: None)
+        self.table = OrderedDict()
 
     def get(self, key: int) -> int:
-        if self.table[key] is not None:
-            # move elem to the front of q
-            idx = self.deq.index(key)
-            del self.deq[idx]
-            self.deq.appendleft(key)
+        if key in self.table.keys():
+            # move elem to the end of q
+            self.table.move_to_end(key)
             return self.table[key]
         else:
             return -1
@@ -18,16 +15,14 @@ class LRUCache:
     def put(self, key: int, value: int) -> None:
         
         # check if key is already in the table
-        if self.table[key] is not None:
+        if key in self.table.keys():
             # do not need to evict key, since the size doesnt changed
             self.get(key)
         # otherwise, insert key to the front of q
         else:
             # check if should evict key
-            if len(self.deq)+1 > self.cap:
-                rm_key = self.deq.pop()
-                self.table[rm_key] = None
-            self.deq.appendleft(key)
+            if len(self.table)+1 > self.cap:
+                self.table.popitem(last=False)
         
         self.table[key] = value
 

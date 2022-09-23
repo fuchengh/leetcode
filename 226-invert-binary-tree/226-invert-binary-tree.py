@@ -6,20 +6,17 @@
 #         self.right = right
 class Solution:
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return None
         q = deque([root])
         
         while q:
             cur = q.popleft()
-            if cur:
-                left = right = None
-                if cur.left:
-                    q.append(cur.left)
-                    left = cur.left
-                if cur.right:
-                    q.append(cur.right)
-                    right = cur.right
-                cur.left = right
-                cur.right = left
+            cur.left, cur.right = cur.right, cur.left
+            if cur.left:
+                q.append(cur.left)
+            if cur.right:
+                q.append(cur.right)
     
         return root
             

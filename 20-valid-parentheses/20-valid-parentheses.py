@@ -4,26 +4,26 @@ class Solution:
         
         for c in s:
             if c == ")":
-                if len(stack) == 0:
+                if not stack:
                     return False
                 top = stack.pop()
                 if top != "(":
                     return False
-            if c == "]":
-                if len(stack) == 0:
+            elif c == "]":
+                if not stack:
                     return False
                 top = stack.pop()
                 if top != "[":
                     return False
-            if c == "}":
-                if len(stack) == 0:
+            elif c == "}":
+                if not stack:
                     return False
                 top = stack.pop()
                 if top != "{":
                     return False
-            if c in "([{":
+            else:
                 stack.append(c)
-        
-        if len(stack) != 0:
+        if stack:
             return False
+        
         return True

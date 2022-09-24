@@ -1,20 +1,18 @@
 class Solution:
-    def floodFill(self, image: List[List[int]], sr: int, sc: int, newColor: int) -> List[List[int]]:
+    def floodFill(self, image: List[List[int]], sr: int, sc: int, color: int) -> List[List[int]]:
+        seen = set()
+        q = deque([(sr, sc)])
+        orig_color = image[sr][sc]
         
-        def dfs(r, c, newColor):
-            seen = set()
-            color = image[r][c]
-            s = [(r, c)]
-            
-            while s:
-                cur = s.pop()
-                i, j = cur
-                image[i][j] = newColor
-                for x, y in [(i+1, j), (i-1, j), (i, j+1), (i, j-1)]:
-                    if 0 <= x < len(image) and 0 <= y < len(image[0]) and image[x][y] == color \
-                        and (x, y) not in seen:
-                        s.append((x, y))
-                        seen.add((x, y))
-        
-        dfs(sr, sc, newColor)
+        while q:
+            cur = q.popleft()
+            x, y = cur
+            seen.add((x, y))
+            image[x][y] = color
+            for dx, dy in [(1,0), (0,1), (-1,0), (0,-1)]:
+                if (x+dx, y+dy) not in seen \
+                and 0 <= x+dx < len(image) \
+                and 0 <= y+dy < len(image[0]) \
+                and image[x+dx][y+dy] == orig_color:
+                    q.append((x+dx, y+dy))
         return image

@@ -5,22 +5,21 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
-        res = []
-        def preOrder(root, path):
-            if not root:
-                return
-            path.append(root.val)
-            preOrder(root.left, path)
-            preOrder(root.right, path)
-            if not root.left and not root.right:
-                if sum(path) == targetSum:
-                    nonlocal res
-                    res.append(path[::])
-            path.pop()
+    def preOrder(self, res, target, root, path):
+        if not root:
+            return
+        path.append(root.val)
+        self.preOrder(res, target, root.left, path)
+        self.preOrder(res, target, root.right, path)
+        if not root.left and not root.right:
+            if sum(path) == target:
+                res.append(path[::])
+        path.pop()
         
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
         if not root:
             return []
         
-        preOrder(root, [])
+        res = []
+        self.preOrder(res, targetSum, root, [])
         return res

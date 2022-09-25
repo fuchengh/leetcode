@@ -9,7 +9,7 @@ class Solution:
         seen = set()
         
         while head:
-            if head in seen:
+            if head.next in seen:
                 return True
             seen.add(head)
             head = head.next

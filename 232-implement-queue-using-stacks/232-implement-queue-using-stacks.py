@@ -1,23 +1,23 @@
 class MyQueue:
     def __init__(self):
         self.q = []
+        self.aux = []
 
     def push(self, x: int) -> None:
-        aux = []
-        while self.q:
-            aux.append(self.q.pop())
         self.q.append(x)
-        while aux:
-            self.q.append(aux.pop())
 
     def pop(self) -> int:
-        return self.q.pop()
+        self.peek()
+        return self.aux.pop()
 
     def peek(self) -> int:
-        return self.q[-1]
+        if not self.aux: # push to aux only if aux is empty (keep the order)
+            while self.q:
+                self.aux.append(self.q.pop())
+        return self.aux[-1]
 
     def empty(self) -> bool:
-        return len(self.q) == 0
+        return len(self.q) == 0 and len(self.aux) == 0
 
 
 # Your MyQueue object will be instantiated and called as such:

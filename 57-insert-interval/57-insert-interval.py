@@ -1,28 +1,29 @@
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
-        ans = []
-        intervals.sort()
-        idx = 0
+        intervals.sort(key=lambda x: x[0])
         
-        while idx < len(intervals):
-            if intervals[idx][0] >  newInterval[0]:
+        ptr = 0
+        res = []
+        
+        while ptr < len(intervals):
+            if intervals[ptr][0] > newInterval[0]:
                 break
-            ans.append(intervals[idx])
-            idx += 1
+            res.append(intervals[ptr])
+            ptr += 1
         
-        # insert new interval
-        if ans and ans[-1][1] >= newInterval[0]:
-            # overlaps
-            ans[-1][1] = max(newInterval[1], ans[-1][1])
+        # push new interval to res
+        if len(res) > 0 and res[-1][1] >= newInterval[0]:
+            res[-1][1] = max(res[-1][1], newInterval[1])
         else:
-            ans.append(newInterval)
+            res.append(newInterval)
         
-        # insert remaining intervals, might need to merge
-        while idx < len(intervals):
-            if intervals[idx][0] <= ans[-1][1]:
-                ans[-1][1] = max(intervals[idx][1], ans[-1][1])
+        # push the remaining intervals
+        while ptr < len(intervals):
+            cur = intervals[ptr]
+            if len(res) > 0 and res[-1][1] >= cur[0]:
+                res[-1][1] = max(res[-1][1], cur[1])
             else:
-                ans.append(intervals[idx])
-            idx += 1
+                res.append(cur)
+            ptr += 1
         
-        return ans
+        return res

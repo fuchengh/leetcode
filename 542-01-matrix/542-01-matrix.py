@@ -1,21 +1,24 @@
 class Solution:
     def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
-        rows, cols = len(mat), len(mat[0])
-        dist = [[math.inf for _ in range(cols)] for _ in range(rows)]
-        q = deque([])
+        res = [[math.inf for j in range(len(mat[0]))] for i in range(len(mat))]
         
-        for r in range(rows):
-            for c in range(cols):
-                if mat[r][c] == 0:
-                    q.append((r, c))
-                    dist[r][c] = 0
-                    
-        while q:
-            cur = q.popleft()
-            r, c = cur
-            for x, y in [(r+1, c), (r-1, c), (r, c+1), (r, c-1)]:
-                if 0 <= x < rows and 0 <= y < cols and dist[x][y] == math.inf:
-                    dist[x][y] = min(dist[x][y], dist[r][c] + 1)
-                    q.append((x, y))
+        # top-left
+        for i in range(len(mat)):
+            for j in range(len(mat[0])):
+                if mat[i][j] == 0:
+                    res[i][j] = 0
+                else:
+                    if i > 0:
+                        res[i][j] = min(res[i][j], res[i-1][j] + 1)
+                    if j > 0:
+                        res[i][j] = min(res[i][j], res[i][j-1] + 1)
         
-        return dist
+        # bottom-right
+        for i in range(len(mat)-1, -1, -1):
+            for j in range(len(mat[0])-1, -1, -1):
+                if i < len(mat)-1:
+                    res[i][j] = min(res[i][j], res[i+1][j] + 1)
+                if j < len(mat[0])-1:
+                    res[i][j] = min(res[i][j], res[i][j+1] + 1)
+        
+        return res

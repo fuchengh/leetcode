@@ -9,18 +9,18 @@ class Node:
 class Solution:
     def cloneGraph(self, node: 'Node') -> 'Node':
         seen = {}
+        q = deque([node])
         
-        def clone(node):
-            if not node:
-                return
-            if node.val in seen:
-                return seen[node.val]
-            clone_node = Node(node.val, [])
-            seen[node.val] = clone_node
-            
-            if node.neighbors:
-                clone_node.neighbors = [clone(n) for n in node.neighbors]
-            
-            return clone_node
+        if not node:
+            return
         
-        return clone(node)
+        while q:
+            cur = q.popleft()
+            if cur not in seen:
+                seen[cur] = Node(cur.val, [])
+            for n in cur.neighbors:
+                if n not in seen:
+                    seen[n] = Node(n.val, [])
+                    q.append(n)
+                seen[cur].neighbors.append(seen[n])
+        return seen[node]

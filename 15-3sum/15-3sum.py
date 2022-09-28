@@ -1,28 +1,16 @@
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
-        res = []
-        nums.sort()
+        dups = set()
+        res = set()
+        seen = {}
         
-        def twoSum(cur, target, start):
-            seen = set()
-            n = start
-            while n < len(nums):
-                comp = target-nums[n]
-                if comp in seen:
-                    res.append([cur, nums[n], comp])
-                    while n+1 < len(nums) and nums[n] == nums[n+1]:
-                        n += 1
-                else:
-                    seen.add(nums[n])
-                # skip processed nums
-                n += 1
-                
-                
-        
-        for i in range(len(nums)-2):
-            if nums[i] > 0:
-                break
-            if (i > 0 and nums[i] != nums[i-1]) or i == 0:
-                twoSum(nums[i], -nums[i], i+1)
+        for i, val1 in enumerate(nums):
+            if val1 not in dups:
+                dups.add(val1)
+                for j, val2 in enumerate(nums[i+1:]):
+                    comp = -val1 - val2
+                    if comp in seen and seen[comp] == i: # answer found!
+                        res.add(tuple(sorted((val1, val2, comp))))
+                    seen[val2] = i
         
         return res

@@ -6,7 +6,7 @@ class Solution:
         seen = defaultdict(lambda: -1)
         
         while right < len(s):
-            if seen[s[right]] > left:
+            if seen[s[right]] > left: # we have seen s[right] before, update left
                 left = seen[s[right]]
             seen[s[right]] = right
             ans = max(ans, right-left)

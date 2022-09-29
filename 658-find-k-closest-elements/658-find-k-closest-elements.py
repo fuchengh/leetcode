@@ -3,17 +3,16 @@ class Solution:
         if len(arr) == k:
             return arr
         
-        left = bisect_left(arr, x) - 1
-        right = left+1
+        left = 0
+        right = len(arr)-k
         
-        while right-left-1 < k:
-            if left == -1:
-                right += 1
-                continue
+        while left < right:
+            mid = (left+right) // 2
             
-            if right == len(arr) or abs(arr[left]-x) <= abs(arr[right]-x):
-                left -= 1
+            if arr[mid+k] - x < x - arr[mid]:
+                # right is closer to x
+                left = mid + 1
             else:
-                right += 1
+                right = mid
         
-        return arr[left+1:right]
+        return arr[left:left+k]

@@ -11,7 +11,7 @@ class Solution:
                 elif grid[r][c] == 1:
                     fresh += 1
         
-        mins = -1
+        mins = 0
         while q:
             len_q = len(q)
             mins += 1
@@ -23,8 +23,4 @@ class Solution:
                         q.append((nr, nc))
                         fresh -= 1
         
-        if fresh == 0:
-            if mins == -1:
-                return 0
-            return mins
-        return -1
+        return max(mins-1, 0) if fresh == 0 else -1

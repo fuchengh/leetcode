@@ -1,17 +1,17 @@
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
         def bfs(r, c):
-            s = [(r, c)]
+            q = deque([(r, c)])
             seen.add((r, c))
-            while s:
-                cur = s.pop()
+            while q:
+                cur = q.popleft()
                 x, y = cur
                 for nr, nc in [(x+1, y), (x-1, y), (x, y+1), (x, y-1)]:
                     if 0 <= nr < len(grid) \
                     and 0 <= nc < len(grid[0]) \
                     and (nr, nc) not in seen \
                     and grid[nr][nc] == "1":
-                        s.append((nr, nc))
+                        q.append((nr, nc))
                         seen.add((nr, nc))
         
         ans = 0

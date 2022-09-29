@@ -12,7 +12,7 @@ class Solution:
                     and (nr, nc) not in seen \
                     and grid[nr][nc] == "1":
                         q.append((nr, nc))
-                        seen.add((nr, nc))
+                        seen.add((nr, nc)) # always add to seen before appending to q!
         
         ans = 0
         seen = set()

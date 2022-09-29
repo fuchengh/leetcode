@@ -6,18 +6,20 @@
 #         self.right = right
 class Solution:
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
-        # run inorder traversal
-        def inOrder(root):
-            if not root:
-                return True
-            if not inOrder(root.left):
-                return False
-            if root.val <= self.prev:
-                return False
-            self.prev = root.val
-            if not inOrder(root.right):
-                return False
-            return True
+        path = []
         
-        self.prev = -math.inf
-        return inOrder(root)
+        def inOrder(node):
+            if not node:
+                return
+            nonlocal path
+            if node.left:
+                inOrder(node.left)
+            path.append(node.val)
+            if node.right:
+                inOrder(node.right)
+            
+        inOrder(root)
+        for i in range(1, len(path)):
+            if path[i-1] >= path[i]:
+                return False
+        return True

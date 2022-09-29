@@ -1,24 +1,26 @@
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
+        def bfs(r, c):
+            s = [(r, c)]
+            seen.add((r, c))
+            while s:
+                cur = s.pop()
+                x, y = cur
+                for nr, nc in [(x+1, y), (x-1, y), (x, y+1), (x, y-1)]:
+                    if 0 <= nr < len(grid) \
+                    and 0 <= nc < len(grid[0]) \
+                    and (nr, nc) not in seen \
+                    and grid[nr][nc] == "1":
+                        s.append((nr, nc))
+                        seen.add((nr, nc))
+        
         ans = 0
+        seen = set()
         
-        def dfs(r, c):
-            q = [(r, c)]
-            
-            while q:
-                cur = q.pop()
-                i, j = cur
-                
-                for x, y in [(i+1, j), (i-1, j), (i, j-1), (i, j+1)]:
-                    if 0 <= x < len(grid) and 0 <= y < len(grid[0]) and grid[x][y] == "1":
-                        # mark this element as 0
-                        grid[x][y] = "0"
-                        q.append((x, y))
-        
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if grid[i][j] == "1":
+        for r in range(len(grid)):
+            for c in range(len(grid[0])):
+                if (r, c) not in seen and grid[r][c] == "1":
                     ans += 1
-                    dfs(i, j)
+                    bfs(r, c)
         
         return ans

@@ -1,18 +1,15 @@
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
-        table = defaultdict(lambda: None)
+        coins.sort()
+        dp = [0] * (amount+1) # stores best number of coins to create val = i
         
-        @lru_cache(None)
-        def dfs(target):
-            if target < 0:
-                return -1
-            if target == 0:
-                return 0
-            min_cost = math.inf
+        for i in range(1, amount+1):
+            dp[i] = math.inf
             for c in coins:
-                res = dfs(target - c)
-                if res != -1:
-                    min_cost = min(min_cost, res+1)
-            return min_cost if min_cost != math.inf else -1
-    
-        return dfs(amount)
+                if i - c < 0:
+                    break
+                if dp[i-c] != math.inf: # has been processed
+                    dp[i] = min(dp[i], 1 + dp[i-c]) # use dp[i-c] + c(1) coins
+        
+        return dp[-1] if dp[-1] != math.inf else -1
+        

@@ -11,6 +11,8 @@ class Solution:
             res = 0
             
             for i in range(1, k+1): # k faces for each dice
+                if i > remain:
+                    break
                 # use one dice, subtract remain by i
                 res += dfs(dices - 1, remain - i)
             

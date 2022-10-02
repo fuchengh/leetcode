@@ -6,6 +6,7 @@ class Solution:
             if dices == 0 and remain == 0:
                 return 1
             if dices < 0 or remain < 0:
+                # cannot use this result
                 return 0
             res = 0
             

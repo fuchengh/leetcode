@@ -14,7 +14,7 @@ class Solution:
                     if not sets.isdisjoint(to_merge): # need to merge, del this set
                         to_merge |= sets
                         del table[name][idx]
-                        idx -= 1
+                        idx -= 1 # since we delete one element in this list, sub idx by 1
                     idx += 1
                 table[name].append(to_merge)
         

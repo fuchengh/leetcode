@@ -3,4 +3,12 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
-        nums.sort()
+        count = Counter(nums)
+        idx = 0
+        for i in range(3):
+            while count[i] > 0:
+                nums[idx] = i
+                idx += 1
+                count[i] -= 1
+        
+        

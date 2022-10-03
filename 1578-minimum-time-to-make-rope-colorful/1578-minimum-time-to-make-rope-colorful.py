@@ -4,15 +4,17 @@ class Solution:
         i, j = 0, 0
         
         while i < len(neededTime) and j < len(neededTime):
-            cur_total = 0
-            cur_max = 0
+            group_total = 0
+            group_max = 0
             
             while j < len(neededTime) and colors[i] == colors[j]:
-                cur_total += neededTime[j]
-                cur_max = max(cur_max, neededTime[j])
+                # keep the sum of the group and the largest one
+                group_total += neededTime[j]
+                group_max = max(group_max, neededTime[j])
                 j += 1
             
-            total_time += cur_total - cur_max
-            i = j
+            # delete all ballons that are not the largest one
+            total_time += group_total - group_max
+            i = j # move to next group
         
         return total_time

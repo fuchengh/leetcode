@@ -1,11 +1,9 @@
 class Solution:
     def runningSum(self, nums: List[int]) -> List[int]:
-        prefix = 0
-        result = []
+        prev = 0
         
         for i, n in enumerate(nums):
-            res = nums[i] + prefix
-            result.append(res)
-            prefix = res
+            nums[i] += prev
+            prev = nums[i]
         
-        return result
+        return nums

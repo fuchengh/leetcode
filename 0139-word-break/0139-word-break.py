@@ -2,13 +2,21 @@ class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         word_set = set(wordDict)
         
-        dp = [False] * (len(s) + 1)
-        dp[0] = True
+        q = deque()
+        visit = set()
         
-        for i in range(1, len(s)+1):
-            for j in range(i):
-                if dp[j] and s[j:i] in word_set:
-                    dp[i] = True
-                    break
+        q.append(0)
         
-        return dp[len(s)]
+        while q:
+            start = q.popleft()
+            if start in visit:
+                continue
+            for end in range(start+1, len(s)+1):
+                w = s[start:end]
+                if w in word_set:
+                    q.append(end)
+                    if end == len(s):
+                        return True
+            visit.add(start)
+        
+        return False

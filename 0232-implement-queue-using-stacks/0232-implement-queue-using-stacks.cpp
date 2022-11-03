@@ -1,37 +1,39 @@
 class MyQueue {
 public:
-    vector<int> stack;
+    vector<int> s1;
+    vector<int> s2;
+    int front;
     
     MyQueue() {
     }
     
     void push(int x) {
-        this->stack.push_back(x);
+        if(s1.empty())
+            front = x;
+        s1.push_back(x);
     }
     
     int pop() {
-        vector<int> tmp;
-        for(int i = this->stack.size()-1; i > 0; i--) {
-            int top = this->stack.back();
-            this->stack.pop_back();
-            tmp.push_back(top);
+        if(s2.empty()){
+            while(!s1.empty()){
+                s2.push_back(s1.back());
+                s1.pop_back();
+            }
         }
-        int ret = this->stack.back();
-        this->stack.pop_back();
-        while(tmp.size() > 0) {
-            int top = tmp.back();
-            tmp.pop_back();
-            this->stack.push_back(top);
-        }
+        int ret = s2.back();
+        s2.pop_back();
         return ret;
     }
     
     int peek() {
-        return this->stack[0];
+        if(!s2.empty()) {
+            return s2.back();
+        }
+        return front;
     }
     
     bool empty() {
-        return this->stack.size() == 0;
+        return s1.size() == 0 && s2.size() == 0;
     }
 };
 
